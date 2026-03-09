@@ -6,6 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Category } from './schemas/category.schema';
+import { CategoryResponse } from './interfaces/category.interface';
 
 @Injectable()
 export class ProductService {
@@ -13,9 +14,9 @@ export class ProductService {
     @InjectModel(Category.name) private categoryModel: Model<Category>,
   ) {}
 
-  async getAllCategories() {
+  async getAllCategories(): Promise<CategoryResponse[]> {
     try {
-      const categories = await this.categoryModel
+      const categories: CategoryResponse[] = await this.categoryModel
         .find({}, { _id: 0, __v: 0, createdAt: 0, updatedAt: 0 })
         .lean()
         .exec();
