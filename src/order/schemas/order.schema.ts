@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { ORDER_TYPES } from '../constants';
 
 @Schema({ _id: false })
 class TransactionPartyDetail {
@@ -18,7 +19,7 @@ class TransactionParties {
 @Schema({ timestamps: true })
 export class Order extends Document {
   @Prop({ required: true, index: true }) orderId: string;
-  @Prop({ required: true, enum: ['BUY', 'SELL'], index: true })
+  @Prop({ required: true, enum: Object.values(ORDER_TYPES), index: true })
   orderType: string;
   @Prop({ type: TransactionParties, default: null })
   transactionParties: TransactionParties;
