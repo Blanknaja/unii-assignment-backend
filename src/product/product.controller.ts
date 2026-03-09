@@ -8,6 +8,6 @@ export class ProductController {
 
   @Get('categories')
   async getCategories(): Promise<CategoryResponse[]> {
-    return this.productService.getAllCategories();
+    return await this.productService.getAllCategories();
   }
 }

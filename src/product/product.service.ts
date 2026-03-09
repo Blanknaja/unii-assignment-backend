@@ -30,4 +30,32 @@ export class ProductService {
       throw new InternalServerErrorException('Something went wrong');
     }
   }
+
+  async getCategoryNameMap(): Promise<
+    Record<string, { categoryName: string; subCategoryName: string }>
+  > {
+    try {
+      const categories = await this.categoryModel.find().lean().exec();
+      const map: Record<string, any> = {};
+
+      for (const cat of categories) {
+        for (const sub of cat.subcategory) {
+          const key = `${cat.categoryId}_${sub.subCategoryId}`;
+          map[key] = {
+            categoryName: cat.categoryName,
+            subCategoryName: sub.subCategoryName,
+          };
+        }
+      }
+      return map;
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      console.error('Error in getCategoryNameMap:', error);
+      throw new InternalServerErrorException(
+        'Failed to load product master data',
+      );
+    }
+  }
 }
