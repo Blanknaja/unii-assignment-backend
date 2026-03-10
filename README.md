@@ -23,76 +23,54 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Unii Assignment Backend project.
 
-## Project setup
+## Installation Steps
 
-```bash
-$ npm install
-```
-
-## Compile and run the project
+1. Run the database locally using Docker Compose:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker-compose up -d
 ```
 
-## Run tests
+2. Import mock data to the database:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run seed
 ```
 
-## Deployment
+3. Create a `.env` file in the root directory to run the project, and add the MongoDB URI:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```env
+MONGODB_URI=mongodb://root:rootpassword@127.0.0.1:27017/unii_assignment?authSource=admin
+```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+4. Install the dependencies and start the API project:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm i && npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## API Testing (cURL)
 
-## Resources
+You can use the following `curl` commands to test the endpoints.
 
-Check out a few resources that may come in handy when working with NestJS:
+**POST : Get Reports Summary**
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+curl -X POST http://localhost:3000/api/reports/summary \
+  -H "Content-Type: application/json" \
+  -d '{
+  "startDate": "2024-04-29",
+  "endDate": "2024-04-30",
+  "grades": ["A", "C"]
+}'
+```
 
-## Support
+_(Note: additional optional fields like `categoryId`, `subCategoryId`, `orderId`, `minPrice`, `maxPrice`, etc. can be added to the JSON body as needed)_
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**GET : Get Product Categories**
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+curl -X GET http://localhost:3000/api/product/categories
+```
