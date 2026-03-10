@@ -13,10 +13,6 @@ export class OrderService {
   async getAggregatedOrders(filters: ReportFilterDto, orderType: OrderType) {
     try {
       const pipeline = this.buildAggregationPipeline(filters, orderType);
-      console.log(
-        'getAggregatedOrders pipeline',
-        JSON.stringify(pipeline, null, 2),
-      );
       return await this.orderModel.aggregate(pipeline);
     } catch (error) {
       console.error(`Error aggregating orders for ${orderType}:`, error);
@@ -134,7 +130,6 @@ export class OrderService {
           ? filters.orderId
           : { $regex: filters.orderId, $options: 'i' };
     }
-    console.log('buildHeaderMatch match', match);
     return match;
   }
 
@@ -157,7 +152,6 @@ export class OrderService {
       if (filters.maxPrice !== undefined)
         match['itemGrade.price'].$lte = Number(filters.maxPrice);
     }
-    console.log('buildItemMatch match', match);
     return match;
   }
 }

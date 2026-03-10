@@ -90,9 +90,6 @@ export class ReportService {
   }
 
   private mergeBuyAndSellData(buyOrders: any[], sellOrders: any[]) {
-    console.log('mergeBuyAndSellData buyOrders', buyOrders);
-    console.log('mergeBuyAndSellData sellOrders', sellOrders);
-
     const reportMap = new Map<string, any>();
 
     for (const buy of buyOrders) {
@@ -118,7 +115,6 @@ export class ReportService {
         reportMap.get(key).sell = this.formatTransactionData(sell);
       }
     }
-    console.log('mergeBuyAndSellData reportMap: ', reportMap);
     return reportMap;
   }
 
