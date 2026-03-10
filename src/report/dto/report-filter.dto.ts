@@ -25,4 +25,6 @@ export class ReportFilterDto {
   @IsArray()
   @IsEnum(GradeType, { each: true })
   grades?: GradeType[];
+
+  @IsOptional() @IsDateString() orderFinishedDate?: string;
 }

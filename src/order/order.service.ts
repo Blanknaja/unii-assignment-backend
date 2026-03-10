@@ -36,21 +36,23 @@ export class OrderService {
     return [
       { $match: headerMatch },
 
-      // Unwind  Array product:ist
       { $unwind: '$requestList' },
       { $addFields: { itemSub: '$requestList' } },
-
-      // Unwind  Array Grade
       { $unwind: '$itemSub.requestList' },
 
-      // Format
       {
         $addFields: {
           itemGrade: {
             grade: '$itemSub.requestList.grade',
             price: { $toDouble: '$itemSub.requestList.price' },
             quantity: { $toDouble: '$itemSub.requestList.quantity' },
-            total: { $toDouble: '$itemSub.requestList.total' },
+            // total: { $toDouble: '$itemSub.requestList.total' },
+            total: {
+              $multiply: [
+                { $toDouble: '$itemSub.requestList.price' },
+                { $toDouble: '$itemSub.requestList.quantity' },
+              ],
+            },
           },
         },
       },
@@ -70,6 +72,7 @@ export class OrderService {
               date: '$orderFinishedDate',
               quantity: '$itemGrade.quantity',
               grade: '$itemGrade.grade',
+              price: '$itemGrade.price',
             },
           },
           totalQty: { $sum: '$itemGrade.quantity' },
